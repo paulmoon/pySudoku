@@ -57,6 +57,7 @@ def initial_try(s):
                     continue
 
                 for m in range(1, 10):
+                    # If current cell is empty and there is only one possibility
                     if (s[row][col] == 0 and used[m] == 0):
                         s[row][col] = m
                         stuck = False
@@ -101,11 +102,13 @@ def main():
     while (len(text) > 0):
         l = []
 
+        # Get a row of numbers
         while len(l) < 9:
             if text[0].isdigit():
                 l.append(int(text[0]))
             text = text[1:]
 
+        # Insert that row into the Sudoku grid
         s.append(l)
         row_count += 1
 

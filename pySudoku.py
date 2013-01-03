@@ -1,19 +1,24 @@
-# Paul Moon
-# December 2012
-# pySudoku.py
+""" Name: pySudoku.py
+    Author: Paul Moon
+    Date: December 2012
 
-# Solves Sudoku puzzles!
+    Description:
+    Solves Sudoku puzzles!
+    
+    First try to solve by filling in the cells with only one possibility.
+    If it cannot go any further, use a backtracking DFS (depth-first search)
+    algorithm to try the possible solutions. As soon as a solution is found,
+    it terminates the algorithm and prints it out.
 
-# First try to solve by filling in the cells with only one possibility.
-# If it cannot go any further, use a backtracking DFS (depth-first search)
-# algorithm to try the possible solutions.
-
-# The algorithm assumes that empty cells are denoted with a 0.
+    The algorithm assumes that empty cells are denoted with a 0.
+"""
 
 import fileinput
 import time
 
 def print_sudoku(s):
+    """ Formats the Sudoku puzzle currently in a 2D list into
+    a grid with lines separating the blocks for readability """
     for row in range(9):
         for col in range(9):
             print s[row][col],
@@ -24,9 +29,9 @@ def print_sudoku(s):
         print
     print
 
-# Given a Sudoku s, row, and column number, return a list which represents
-# the valid numbers that can go in that cell. 0 = possible, 1 = not possible
 def test_cell(s, row, col):
+    """ Given a Sudoku puzzle s, row, and column number, return a list which represents
+    the valid numbers that can go in that cell. 0 = possible, 1 = not possible """
     used = [0]*10
     used[0] = 1
     block_row = row / 3
@@ -45,7 +50,11 @@ def test_cell(s, row, col):
     return used
 
 def initial_try(s):
+    """ Given a Sudoku puzzle, try to solve the puzzle by iterating through each
+    cell and determining the possible numbers in that cell. If only one possible
+    number exists, fill it in and continue on until the puzzle is stuck. """
     stuck = False
+
     while not stuck:
         stuck = True
         # Iterate through the Sudoku puzzle
@@ -58,12 +67,16 @@ def initial_try(s):
 
                 for m in range(1, 10):
                     # If current cell is empty and there is only one possibility
+                    # then fill in the current cell
                     if (s[row][col] == 0 and used[m] == 0):
                         s[row][col] = m
                         stuck = False
                         break
 
 def DFS_solve(s, row, col):
+    """ Given a Sudoku puzzle, solve the puzzle by recursively performing DFS
+    which 'tries' out the possible solutions and by using backtracking (eliminating 
+    invalid tries and all the possible cases arising from those tries) """
     if row == 8 and col == 8:
         used = test_cell(s, row, col)
         if 0 in used:
@@ -93,7 +106,6 @@ def main():
     num_puzzles = 0
     s = []
     text = ""
-    row_count = 0
 
     for line in fileinput.input():
         line = ' '.join(line.split())
@@ -110,9 +122,8 @@ def main():
 
         # Insert that row into the Sudoku grid
         s.append(l)
-        row_count += 1
 
-        if row_count == 9:
+        if len(s) == 9:
             num_puzzles += 1
             print "Puzzle Number %d:\n" %(num_puzzles)
             print "Original:"
@@ -129,7 +140,6 @@ def main():
 
             print "="*30
             s = []
-            row_count = 0
 
     print "%d seconds to solve %d puzzles" %(time.time() - start, num_puzzles)
 

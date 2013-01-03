@@ -156,7 +156,7 @@ def reduce_sudoku(s, difficulty):
 def main():
     start = time.time()
 
-    f = open("SudokuText.txt", "w")
+    f = open("SudokuPuzzles.txt", "w")
     user_input = int(raw_input("How many Sudoku puzzles would you like to generate?: "))
     difficulty = raw_input("Easy or Difficult puzzles?: (e or d)")
 

@@ -15,9 +15,11 @@ Generator: The generator starts with an empty 9x9 grid and fills it up by iterat
 How to run
 ----------
 To run the solver:
+
     python pySudoku.py Sudokus.txt
 
 To run the generator:
+
     python Generator.py
 
 Of course, you can use the solver with any text file that contains Sudoku puzzles.

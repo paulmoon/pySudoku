@@ -1,37 +1,42 @@
-""" Name: pySudoku.py
-    Author: Paul Moon
-    Date: December 2012
+""" 
+Name: pySudoku.py
+Author: Paul Moon
+Date: December 2012
 
-    Description:
-    Solves Sudoku puzzles!
-    
-    First try to solve by filling in the cells with only one possibility.
-    If it cannot go any further, use a backtracking DFS (depth-first search)
-    algorithm to try the possible solutions. As soon as a solution is found,
-    it terminates the algorithm and prints it out.
+Description:
+Solves Sudoku puzzles!
 
-    The algorithm assumes that empty cells are denoted with a 0.
+First try to solve by filling in the cells with only one possibility.
+If it cannot go any further, use a backtracking DFS (depth-first search)
+algorithm to try the possible solutions. As soon as a solution is found,
+it terminates the algorithm and prints it out.
+
+The algorithm assumes that empty cells are denoted with a 0.
 """
 
 import fileinput
 import time
 
 def print_sudoku(s):
-    """ Formats the Sudoku puzzle currently in a 2D list into
-    a grid with lines separating the blocks for readability """
+    """
+    Formats the Sudoku puzzle currently in a 2D list into
+    a grid with lines separating the blocks for readability
+    """
     for row in range(9):
         for col in range(9):
             print s[row][col],
-            if (col+1) == 3 or (col+1) == 6:
+            if col+1 == 3 or col+1 == 6:
                 print " | ",
-        if (row+1) == 3 or (row+1) == 6:
+        if row+1 == 3 or row+1 == 6:
             print "\n" + "-"*25,
         print
     print
 
 def test_cell(s, row, col):
-    """ Given a Sudoku puzzle s, row, and column number, return a list which represents
-    the valid numbers that can go in that cell. 0 = possible, 1 = not possible """
+    """
+    Given a Sudoku puzzle s, row, and column number, return a list which represents
+    the valid numbers that can go in that cell. 0 = possible, 1 = not possible
+    """
     used = [0]*10
     used[0] = 1
     block_row = row / 3
@@ -50,9 +55,11 @@ def test_cell(s, row, col):
     return used
 
 def initial_try(s):
-    """ Given a Sudoku puzzle, try to solve the puzzle by iterating through each
+    """
+    Given a Sudoku puzzle, try to solve the puzzle by iterating through each
     cell and determining the possible numbers in that cell. If only one possible
-    number exists, fill it in and continue on until the puzzle is stuck. """
+    number exists, fill it in and continue on until the puzzle is stuck.
+    """
     stuck = False
 
     while not stuck:
@@ -62,21 +69,23 @@ def initial_try(s):
             for col in range(9):
                 used = test_cell(s, row, col)
                 # More than one possibility
-                if (used.count(0) != 1):
+                if used.count(0) != 1:
                     continue
 
                 for m in range(1, 10):
                     # If current cell is empty and there is only one possibility
                     # then fill in the current cell
-                    if (s[row][col] == 0 and used[m] == 0):
+                    if s[row][col] == 0 and used[m] == 0:
                         s[row][col] = m
                         stuck = False
                         break
 
 def DFS_solve(s, row, col):
-    """ Given a Sudoku puzzle, solve the puzzle by recursively performing DFS
+    """
+    Given a Sudoku puzzle, solve the puzzle by recursively performing DFS
     which 'tries' out the possible solutions and by using backtracking (eliminating 
-    invalid tries and all the possible cases arising from those tries) """
+    invalid tries and all the possible cases arising from those tries)
+    """
     if row == 8 and col == 8:
         used = test_cell(s, row, col)
         if 0 in used:
@@ -87,12 +96,12 @@ def DFS_solve(s, row, col):
         row = row+1
         col = 0
 
-    if (s[row][col] == 0):
+    if s[row][col] == 0:
         used = test_cell(s, row, col)
         for i in range(1, 10):
-            if (used[i] == 0):
+            if used[i] == 0:
                 s[row][col] = i
-                if (DFS_solve(s, row, col+1)):
+                if DFS_solve(s, row, col+1):
                     return True
 
         # Reached here? Then we tried 1-9 without success
@@ -111,7 +120,7 @@ def main():
         line = ' '.join(line.split())
         text += line
 
-    while (len(text) > 0):
+    while len(text) > 0:
         l = []
 
         # Get a row of numbers

@@ -1,16 +1,17 @@
-""" Name: Generator.py
-    Author: Paul Moon
-    Date: December 2012
+"""
+Name: Generator.py
+Author: Paul Moon
+Date: December 2012
 
-    Description:
-    Generates Sudoku puzzles that have a unique solution.
-    Able to generate either easy (requires nothing harder than hidden singles) puzzles,
-    or medium/difficult puzzles (sometimes requiring extreme strategies/techniques like
-    cell-forcing chains).
+Description:
+Generates Sudoku puzzles that have a unique solution.
+Able to generate either easy (requires nothing harder than hidden singles) puzzles,
+or medium/difficult puzzles (sometimes requiring extreme strategies/techniques like
+cell-forcing chains).
 
-    The algorithm that generates difficult puzzles gives you not only unique boards,
-    but boards where you cannot remove any more numbers without destroying the uniqueness
-    of the solution.
+The algorithm that generates difficult puzzles gives you not only unique boards,
+but boards where you cannot remove any more numbers without destroying the uniqueness
+of the solution.
 """
 
 import pySudoku
@@ -18,8 +19,10 @@ import random
 import time
 
 def toString(s):
-    """ Formats a 2D list Sudoku puzzle into one line of integers
-    for easy writing to a file """
+    """
+    Formats a 2D list Sudoku puzzle into one line of integers
+    for easy writing to a file
+    """
     output = ""
     for i in range(9):
         for j in range(9):
@@ -27,9 +30,11 @@ def toString(s):
     return output + "\n"
 
 def checkValid(s, row, col):
-    """ Returns True if a given cell is valid in a Sudoku puzzle, and
+    """
+    Returns True if a given cell is valid in a Sudoku puzzle, and
     False if not. A cell is valid if the number in that cell is not present
-    in any of the cells in the same row, or the same column, or the same block. """
+    in any of the cells in the same row, or the same column, or the same block.
+    """
     block_row = row / 3
     block_col = col / 3
 
@@ -53,12 +58,14 @@ def checkValid(s, row, col):
     return True
 
 def populateBoard(s, row, col):
-    """ Starting with a 9x9 grid of 0's, this function recursively populates
+    """
+    Starting with a 9x9 grid of 0's, this function recursively populates
     the grid. It makes a list of integers from 1-9, shuffles the order, and 
     tries the first number in the list in the current cell. If the inserted
     integer works, then it continues on. If the integer does not work then
     it tries the next one in the list. If none of the integers work, then 
-    set it to blank and return false. """
+    set it to blank and return false.
+    """
     if row == 8 and col == 8:
         used = pySudoku.test_cell(s, row, col)
         s[row][col] = used.index(0)
@@ -80,10 +87,12 @@ def populateBoard(s, row, col):
     return False
 
 def DFS_solve(copy_s, row, col):
-    """ Recursively solves the copy_s puzzle with a backtracking
+    """
+    Recursively solves the copy_s puzzle with a backtracking
     DFS algorithm, while returning the number of solutions found. 
     Starts at row 0 and column 0, and continues on to the right and 
-    down the rows. """
+    down the rows.
+    """
     num_solutions = 0
 
     # Reached the last cells without any error, so there is a solution
@@ -115,14 +124,16 @@ def DFS_solve(copy_s, row, col):
     return num_solutions
 
 def reduce_sudoku(s, difficulty):
-    """ First generate a list of integers 0-80 representing the indices
+    """
+    First generate a list of integers 0-80 representing the indices
     in the puzzle. Scramble the order. Given a complete Sudoku puzzle s, 
     try to remove the number at the first index in the list and then attempting
     to solve it. If there exists more than one solution, then it is not a valid
     Sudoku puzzle, so undo the last change. If easy puzzles are desired, then
     after a puzzle with a unique solution is found, algorithm stops. If difficult
     puzzles are wanted, then even after a valid puzzle is found, all the remaining 
-    indices must be tried to see if the puzzle can be made any harder. """
+    indices must be tried to see if the puzzle can be made any harder.
+    """
     indices = range(81)
     random.shuffle(indices)
 

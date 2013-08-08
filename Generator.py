@@ -35,8 +35,8 @@ def checkValid(s, row, col):
     False if not. A cell is valid if the number in that cell is not present
     in any of the cells in the same row, or the same column, or the same block.
     """
-    block_row = row / 3
-    block_col = col / 3
+    block_row = row // 3
+    block_col = col // 3
 
     # Row and Column
     # Ignore blank spots
@@ -60,10 +60,10 @@ def checkValid(s, row, col):
 def populateBoard(s, row, col):
     """
     Starting with a 9x9 grid of 0's, this function recursively populates
-    the grid. It makes a list of integers from 1-9, shuffles the order, and 
+    the grid. It makes a list of integers from 1-9, shuffles the order, and
     tries the first number in the list in the current cell. If the inserted
     integer works, then it continues on. If the integer does not work then
-    it tries the next one in the list. If none of the integers work, then 
+    it tries the next one in the list. If none of the integers work, then
     set it to blank and return false.
     """
     if row == 8 and col == 8:
@@ -75,7 +75,7 @@ def populateBoard(s, row, col):
         row = row+1
         col = 0
 
-    temp = range(1, 10)
+    temp = list(range(1, 10))
     random.shuffle(temp)
     # Fill Sudoku
     for i in range(9):
@@ -89,8 +89,8 @@ def populateBoard(s, row, col):
 def DFS_solve(copy_s, row, col):
     """
     Recursively solves the copy_s puzzle with a backtracking
-    DFS algorithm, while returning the number of solutions found. 
-    Starts at row 0 and column 0, and continues on to the right and 
+    DFS algorithm, while returning the number of solutions found.
+    Starts at row 0 and column 0, and continues on to the right and
     down the rows.
     """
     num_solutions = 0
@@ -126,19 +126,19 @@ def DFS_solve(copy_s, row, col):
 def reduce_sudoku(s, difficulty):
     """
     First generate a list of integers 0-80 representing the indices
-    in the puzzle. Scramble the order. Given a complete Sudoku puzzle s, 
+    in the puzzle. Scramble the order. Given a complete Sudoku puzzle s,
     try to remove the number at the first index in the list and then attempting
     to solve it. If there exists more than one solution, then it is not a valid
     Sudoku puzzle, so undo the last change. If easy puzzles are desired, then
     after a puzzle with a unique solution is found, algorithm stops. If difficult
-    puzzles are wanted, then even after a valid puzzle is found, all the remaining 
+    puzzles are wanted, then even after a valid puzzle is found, all the remaining
     indices must be tried to see if the puzzle can be made any harder.
     """
-    indices = range(81)
+    indices = list(range(81))
     random.shuffle(indices)
 
     while indices:
-        row = indices[0] / 9
+        row = indices[0] // 9
         col = indices[0] % 9
         temp = s[row][col]
         s[row][col] = 0
@@ -155,7 +155,7 @@ def reduce_sudoku(s, difficulty):
                 if num_solutions > 1:
                     s[row][col] = temp
                     # If we want easy puzzles, we would stop here after finding
-                    # the first puzzle with a unique solution without attempting to 
+                    # the first puzzle with a unique solution without attempting to
                     # make it harder by trying to remove other elements and seeing
                     # if there is another harder puzzle with a unique solution
                     if difficulty == "E" or difficulty == "e":
@@ -166,11 +166,11 @@ def reduce_sudoku(s, difficulty):
 
 def main():
     f = open("SudokuPuzzles.txt", "w")
-    user_input = int(raw_input("How many Sudoku puzzles would you like to generate?: "))
-    difficulty = raw_input("Easy or Difficult puzzles?: (e or d)")
+    user_input = int(input("How many Sudoku puzzles would you like to generate?: "))
+    difficulty = input("Easy or Difficult puzzles?: (e or d)")
     start = time.time()
 
-    for _ in range(user_input):    
+    for _ in range(user_input):
         # 9 x 9 grid of 0s
         s = [[0]*9 for _ in range(9)]
 
@@ -179,7 +179,7 @@ def main():
         output = toString(s)
         f.write(output)
 
-    print "%d seconds to come up with %d Sudoku puzzles." %(time.time() - start, user_input)
+    print("{:.2f} seconds to come up with {} Sudoku puzzles.".format(time.time() - start, user_input))
 
 if __name__ == '__main__':
     main()

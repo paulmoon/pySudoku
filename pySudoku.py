@@ -1,10 +1,10 @@
-""" 
+"""
 Name: pySudoku.py
 Author: Paul Moon
 Date: December 2012
 
 Description:
-Solves Sudoku puzzles!
+Solves Sudoku puzzles.
 
 First try to solve by filling in the cells with only one possibility.
 If it cannot go any further, use a backtracking DFS (depth-first search)
@@ -24,13 +24,13 @@ def print_sudoku(s):
     """
     for row in range(9):
         for col in range(9):
-            print s[row][col],
+            print(s[row][col], end=' ')
             if col+1 == 3 or col+1 == 6:
-                print " | ",
+                print(" | ", end=' ')
         if row+1 == 3 or row+1 == 6:
-            print "\n" + "-"*25,
-        print
-    print
+            print("\n" + "-"*25, end=' ')
+        print()
+    print()
 
 def test_cell(s, row, col):
     """
@@ -39,8 +39,8 @@ def test_cell(s, row, col):
     """
     used = [0]*10
     used[0] = 1
-    block_row = row / 3
-    block_col = col / 3
+    block_row = row // 3
+    block_col = col // 3
 
     # Row and Column
     for m in range(9):
@@ -83,7 +83,7 @@ def initial_try(s):
 def DFS_solve(s, row, col):
     """
     Given a Sudoku puzzle, solve the puzzle by recursively performing DFS
-    which 'tries' out the possible solutions and by using backtracking (eliminating 
+    which tries out the possible solutions and by using backtracking (eliminating
     invalid tries and all the possible cases arising from those tries)
     """
     if row == 8 and col == 8:
@@ -134,8 +134,8 @@ def main():
 
         if len(s) == 9:
             num_puzzles += 1
-            print "Puzzle Number %d:\n" %(num_puzzles)
-            print "Original:"
+            print("Puzzle Number {:d}".format(num_puzzles))
+            print("Original:")
             print_sudoku(s)
 
             initial_try(s)
@@ -144,13 +144,13 @@ def main():
                     DFS_solve(s, 0, 0)
                     break
 
-            print "Solution:"
+            print("Solution:")
             print_sudoku(s)
 
-            print "="*30
+            print("="*30)
             s = []
 
-    print "%d seconds to solve %d puzzles" %(time.time() - start, num_puzzles)
+    print("{:.2f} seconds to solve {} puzzles".format(time.time() - start, num_puzzles))
 
 if __name__ == "__main__":
     main()
